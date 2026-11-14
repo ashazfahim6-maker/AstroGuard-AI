@@ -1,0 +1,46 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+.env.*
+.pytest_cache/
+.coverage
+htmlcov/
+artifacts/
+astroguard.db
+astroguard.db-shm
+astroguard.db-wal
+instance/
+
+# Local databases and SQLite sidecar files (never publish demo/user records)
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+*.db.bak
+*.sqlite.bak
+*.sqlite3.bak
+
+# Local logs and editor/OS files
+*.log
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Additional local environments, packaging output, and credential files
+venv/
+env/
+build/
+dist/
+*.egg-info/
+node_modules/
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+secrets.json

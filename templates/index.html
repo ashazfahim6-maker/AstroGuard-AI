@@ -1,0 +1,134 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080f1b">
+  <title>AstroGuard AI | Mission Health</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='offline.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to dashboard</a>
+<div class="shell">
+  <aside>
+    <a class="brand" href="/" aria-label="AstroGuard AI home"><span class="brand-mark">✦</span> ASTROGUARD <small>AI</small></a>
+    <div class="mission-label"><span class="dot"></span> DEMO-01 <span class="muted">/ MISSION CONTROL</span></div>
+    <div class="side-title">WORKSPACE</div>
+    <nav aria-label="Dashboard views">
+      <button class="nav active" data-view="overview" aria-current="page"><span>◈</span> Health Overview</button>
+      <button class="nav" data-view="vitals"><span>⌁</span> Vital Signs</button>
+      <button class="nav" data-view="analytics"><span>▤</span> Crew Analytics</button>
+      <button class="nav" data-view="profiles"><span>◎</span> Crew &amp; Baselines</button>
+      <button class="nav" data-view="assessment"><span>✎</span> Daily Check-in</button>
+      <button class="nav" data-view="timeline"><span>⌇</span> Mission Timeline</button>
+      <button class="nav" data-view="communications"><span>⇄</span> Earth Queue</button>
+      <button class="nav" data-view="insights"><span>◇</span> Health Insights</button>
+      <button class="nav" data-view="demo"><span>▶</span> Guided Demo</button>
+      <a class="nav" href="/research"><span>◫</span> Research &amp; Method</a>
+      <a class="nav" href="/nasa-research"><span>▦</span> NASA Research Data</a>
+    </nav>
+    <div class="side-note"><div class="eyebrow">RESEARCH ENVIRONMENT</div><p>Explore crew wellness with synthetic telemetry and transparent rules.</p><span class="tag">NO LIVE SENSOR CONNECTION</span></div>
+    <div class="side-footer">ASTROGUARD / LOCAL DEMO<br><span>All crew profiles are fictional.</span></div>
+  </aside>
+  <main id="main">
+    <div class="topline"><span>MISSION CONTROL <span class="slash">/</span> CREW WELLNESS</span><span class="tag">SIMULATED DATA ONLY</span></div>
+    <header>
+      <div><div class="eyebrow">OBSERVE. UNDERSTAND. EXPLORE.</div><h1 id="viewTitle">Astronaut Health <span>Overview</span></h1><p id="crewIdentity">Mission DEMO-01 · Crew Member 01 · Fictional crew</p></div>
+      <div class="live" id="connection" role="status"><span class="dot"></span> CONNECTING</div>
+    </header>
+    <div class="toolbar">
+      <div class="crew-picker"><label for="profileSelect">ACTIVE CREW</label><select id="profileSelect">{% for profile in profiles %}<option value="{{ profile.id }}">{{ profile.callsign }} · {{ profile.name }}</option>{% endfor %}</select></div>
+      <div class="toolbar-actions"><button id="pause" type="button" aria-pressed="false">Pause simulation</button><button id="refresh" type="button">↻ Refresh</button><div class="downloads" aria-label="Download simulated health report"><span>REPORT</span><a id="reportCsv" href="/api/report?format=csv" download>CSV ↓</a><a id="reportJson" href="/api/report?format=json" download>JSON ↓</a></div></div>
+    </div>
+    <p id="requestError" class="error-message" role="alert" hidden></p>
+    <div class="banner"><div class="status-icon" aria-hidden="true">✚</div><div><div class="eyebrow">EXPERIMENTAL HEALTH STATUS</div><h2 id="status" role="status">Loading telemetry…</h2><p id="updated">Waiting for the first response</p></div><div class="banner-note"><span class="tag">RULE-BASED DEMO</span><p>5-second simulated samples<br>48-sample rolling window</p></div></div>
+    <section class="metrics" aria-label="Latest simulated vital signs">
+      <article class="metric"><div class="metric-label"><span>♥</span> HEART RATE</div><strong><span id="hr">--</span><small>BPM</small></strong><p id="baseline-heart_rate">Personal baseline loading</p><span class="metric-source">SIMULATED TELEMETRY</span></article>
+      <article class="metric"><div class="metric-label"><span>◉</span> OXYGEN SATURATION</div><strong><span id="spo2">--</span><small>%</small></strong><p id="baseline-spo2">Personal baseline loading</p><span class="metric-source">SIMULATED TELEMETRY</span></article>
+      <article class="metric"><div class="metric-label"><span>☼</span> BODY TEMPERATURE</div><strong><span id="temp">--</span><small>°C</small></strong><p id="baseline-temperature">Personal baseline loading</p><span class="metric-source">SIMULATED TELEMETRY</span></article>
+      <article class="metric"><div class="metric-label"><span>☾</span> SLEEP DURATION</div><strong><span id="sleep">--</span><small>HRS</small></strong><p id="baseline-sleep_hours">Personal baseline loading</p><span class="metric-source">SIMULATED SLEEP ESTIMATE</span></article>
+    </section>
+    <section class="panel provenance-panel" aria-labelledby="provenanceTitle">
+      <div class="panel-head"><div><div class="eyebrow">DATA PROVENANCE</div><h3 id="provenanceTitle">Know what each source means</h3></div><a href="/nasa-research">Review NASA datasets →</a></div>
+      <div class="provenance-grid">
+        <article><span class="source-key nasa">NASA RESEARCH DATA</span><p>Verified OSDR study metadata appears on the research-data page only. It does not drive this dashboard.</p></article>
+        <article><span class="source-key simulated">SIMULATED MEASUREMENTS</span><p>Heart rate, SpO₂, temperature, and sleep values are generated locally for fictional crew.</p></article>
+        <article><span class="source-key manual">MANUAL DEMO THRESHOLDS</span><p>Personal baselines, tolerances, and alert limits are configurable prototype assumptions—not NASA criteria.</p></article>
+        <article><span class="source-key algorithm">EXPERIMENTAL ALGORITHMS</span><p>Deterministic deviation, trend, and combined-review rules are transparent demo logic—not trained AI or clinical models.</p></article>
+      </div>
+    </section>
+    <section class="panels">
+      <div class="panel"><div class="panel-head"><div><div class="eyebrow">TELEMETRY STREAM</div><h3>Vital Sign Trends</h3></div><span class="legend"><i></i> Signal <b>┄</b> Baseline</span></div><p class="panel-description">Independent scales · Latest 48 samples · Local sample times</p><div class="chart-wrap"><div id="trend"></div></div></div>
+      <div class="panel alert-panel"><div class="panel-head"><div><div class="eyebrow">EXPLAINABLE DETECTION</div><h3>Experimental Alert Center</h3></div><span id="alertCount" class="tag">0 alerts</span></div><div id="alerts" class="alerts" aria-live="polite">Loading explanations…</div><p class="method-note">Rules compare each value with an editable personal baseline and illustrative demo limits. These alerts are experimental, not diagnoses.</p><div class="scenario"><div class="eyebrow">INJECT A DEMO SCENARIO</div><p id="scenarioLabel">Choose a scenario to explore the rules.</p><button data-scenario="normal" aria-pressed="true">Normal</button><button data-scenario="elevated" aria-pressed="false">Elevated HR</button><button data-scenario="low_oxygen" aria-pressed="false">Low O₂</button></div></div>
+    </section>
+    <section id="details" class="panel" hidden></section>
+    <section id="profilePanel" class="panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">PERSONAL REFERENCE</div><h3>Fictional astronaut profile</h3></div><span class="tag">EDITABLE DEMO BASELINES</span></div>
+      <p id="profileDescription" class="panel-description"></p>
+      <p class="method-note">The reference value and allowed deviation are manually configured demo assumptions, not learned clinical baselines. A deviation strictly greater than the allowed amount triggers an experimental flag. Saving re-evaluates existing samples without changing them.</p>
+      <form id="baselineForm">
+        <div class="baseline-grid">{% for key, spec in metric_specs.items() %}<fieldset><legend>{{ spec.label }} <span>({{ spec.unit }})</span></legend><label for="{{ key }}-value">Reference value<input id="{{ key }}-value" name="{{ key }}-value" type="number" min="{{ spec.bounds[0] }}" max="{{ spec.bounds[1] }}" step="any" required></label><label for="{{ key }}-tolerance">Allowed deviation (±)<input id="{{ key }}-tolerance" name="{{ key }}-tolerance" type="number" min="{{ spec.tolerance_bounds[0] }}" max="{{ spec.tolerance_bounds[1] }}" step="any" required></label></fieldset>{% endfor %}</div>
+        <div class="form-actions"><button type="submit" id="saveBaseline" class="primary">Save personal baseline</button><button type="button" id="resetBaseline">Discard unsaved edits</button><span id="baselineFeedback" role="status"></span></div>
+      </form>
+    </section>
+    <section id="assessmentPanel" class="panel phase-panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">SUBJECTIVE CREW INPUT</div><h3>Daily self-assessment</h3></div><span class="tag">SQLITE PERSISTED</span></div>
+      <p class="method-note">Fictional self-report data for prototype workflow testing. The 1–5 scales are AstroGuard demo scales and are not diagnostic instruments.</p>
+      <form id="assessmentForm">
+        <div class="assessment-grid">
+          <label>Assessment date<input id="assessmentDate" type="date" required></label>
+          <label>Fatigue <span>1 low · 5 high</span><select id="fatigue" required><option value="">Select</option>{% for value in range(1, 6) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></label>
+          <label>Stress <span>1 low · 5 high</span><select id="stress" required><option value="">Select</option>{% for value in range(1, 6) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></label>
+          <label>Sleep quality <span>1 poor · 5 good</span><select id="sleepQuality" required><option value="">Select</option>{% for value in range(1, 6) %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></label>
+        </div>
+        <fieldset class="symptoms"><legend>Symptoms (optional)</legend>{% for symptom in ['Headache', 'Nausea', 'Dizziness', 'Muscle soreness', 'Congestion', 'None reported'] %}<label><input type="checkbox" name="symptom" value="{{ symptom }}"> {{ symptom }}</label>{% endfor %}</fieldset>
+        <label class="notes-label">Recent activity (optional)<textarea id="recentActivity" maxlength="500" rows="2" placeholder="Example: 30-minute resistance exercise session"></textarea></label>
+        <label class="notes-label">Notes (optional)<textarea id="assessmentNotes" maxlength="1000" rows="3" placeholder="Fictional mission note"></textarea></label>
+        <div class="form-actions"><button class="primary" type="submit">Save daily assessment</button><span id="assessmentFeedback" role="status"></span></div>
+      </form>
+      <div class="offline-note">Offline: this form can be queued in this browser after the app has loaded once. It synchronizes when the local Flask server is reachable again.</div>
+      <div id="assessmentHistory" class="record-list"></div>
+    </section>
+    <section id="timelinePanel" class="panel phase-panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">COMBINED MISSION LOG</div><h3>Health timeline</h3></div><button id="refreshTimeline" type="button">↻ Refresh timeline</button></div>
+      <p class="method-note">Combines persisted self-assessments and queued mission reports with experimental telemetry flags from the current 48-sample in-memory window.</p>
+      <div id="timelineList" class="timeline-list"></div>
+    </section>
+    <section id="communicationPanel" class="panel phase-panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">SIMULATED DEEP-SPACE LINK</div><h3>Outgoing Earth report queue</h3></div><span id="syncBadge" class="tag">SYNC CHECKING</span></div>
+      <p class="method-note">Delay is accelerated for demonstration. It models queue states only and does not reproduce a real mission network.</p>
+      <form id="communicationForm" class="communication-form">
+        <label>Report subject<input id="communicationSubject" maxlength="120" value="Daily astronaut health report" required></label>
+        <label>Simulated one-way delay<select id="communicationDelay"><option value="5">5 seconds</option><option value="30" selected>30 seconds</option><option value="120">2 minutes</option></select></label>
+        <button class="primary" type="submit">Queue health snapshot for Earth</button>
+        <button id="syncNow" type="button">Synchronize offline queue &amp; Earth link</button>
+      </form>
+      <div class="offline-note">Offline: outgoing requests are stored locally and sent to Flask after reconnection. Delivery countdown begins when Flask accepts the request.</div>
+      <p id="communicationFeedback" role="status"></p><div id="communicationList" class="record-list"></div>
+    </section>
+    <section id="insightsPanel" class="panel phase-panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">EXPLAINABLE TREND COMPARISON</div><h3>Health insights</h3></div><span class="tag">EXPERIMENTAL RULES</span></div>
+      <p class="method-note">Each statement compares the latest synthetic value with the selected astronaut’s editable demo baseline and two adjacent six-sample windows. No prediction or diagnosis is made.</p>
+      <div id="insightList" class="insight-grid"></div>
+    </section>
+    <section id="demoPanel" class="panel phase-panel" hidden>
+      <div class="panel-head"><div><div class="eyebrow">END-TO-END DECISION SUPPORT WALKTHROUGH</div><h3>Elevated heart-rate demonstration</h3></div><span class="tag">SYNTHETIC WORKFLOW</span></div>
+      <p class="method-note">Follow the six steps in order. This guided flow uses fictional crew, synthetic measurements, experimental rules, and a simulated Earth link. It is not a medical procedure.</p>
+      <ol class="demo-steps">
+        <li><strong>Inject synthetic elevated heart rate</strong><span>Create a 125 BPM demo sample and an experimental review flag.</span><button id="demoStart" type="button">1 · Start elevated-HR scenario</button></li>
+        <li><strong>Review the explainable flag</strong><span>Open Health Overview to see the exact demo-limit and personal-baseline rules.</span><button id="demoReview" type="button">2 · Review flag</button></li>
+        <li><strong>Record a self-assessment</strong><span>Enter fatigue, stress, sleep quality, symptoms, and recent activity.</span><button id="demoAssessment" type="button">3 · Open daily check-in</button></li>
+        <li><strong>Create an Earth report</strong><span>Queue a snapshot containing the current synthetic status and explanations.</span><button id="demoReport" type="button">4 · Prepare report</button></li>
+        <li><strong>Observe communication delay</strong><span>The report stays queued even after its timer expires until a simulated synchronization occurs.</span></li>
+        <li><strong>Synchronize and confirm delivery</strong><span>Eligible reports are marked delivered only by this explicit simulated link sync.</span><button id="demoSync" type="button">6 · Synchronize Earth link</button></li>
+      </ol>
+      <p id="demoStatus" class="offline-note" role="status">Ready. Start with step 1.</p>
+    </section>
+    <footer><strong>SIMULATED DATA · EXPERIMENTAL HEALTH ALERTS</strong><br>Fictional crew. Illustrative rules, not medical advice or validated flight software. Do not use for real patient care.<br>Simulation advances only while an active dashboard requests samples; pause affects this browser tab. No trained AI model.</footer>
+    <noscript><p class="error-message">Enable JavaScript to view simulated monitoring. Reports remain available through the links above.</p></noscript>
+  </main>
+</div>
+</body>
+</html>
